@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = Physics2D.OverlapCircle(transform.position + Vector3.down * 0.5f, groundCheckRadius, groundLayerMask);
         }
-        Debug.Log($"Grounded: {isGrounded}, Was Grounded: {wasGrounded}, Current Jump Count: {currentJumpCount}");
+        // Debug.Log($"Grounded: {isGrounded}, Was Grounded: {wasGrounded}, Current Jump Count: {currentJumpCount}");
         // Reset jump count when player lands on ground
         if (isGrounded && !wasGrounded && resetJumpsOnGrounded)
         {
@@ -183,8 +183,9 @@ public class PlayerController : MonoBehaviour
         // Check if we can jump (either grounded with coyote time OR have remaining air jumps)
         bool canGroundJump = jumpBufferCounter > 0f && coyoteTimeCounter > 0f;
         bool canAirJump = !isGrounded && currentJumpCount < maxJumpCount && jumpBufferCounter > 0f;
-        Debug.Log($"Jump Buffer: {jumpBufferCounter}, Coyote Time: {coyoteTimeCounter}, current Velocity {rb.linearVelocity}");
-        Debug.Log($"Can Ground Jump: {canGroundJump}, Can Air Jump: {canAirJump}, Current Jump Count: {currentJumpCount}");
+
+        //Debug.Log($"Jump Buffer: {jumpBufferCounter}, Coyote Time: {coyoteTimeCounter}, current Velocity {rb.linearVelocity}");
+        //Debug.Log($"Can Ground Jump: {canGroundJump}, Can Air Jump: {canAirJump}, Current Jump Count: {currentJumpCount}");
 
         //if (canGroundJump && !isGrounded)
         //{
