@@ -75,20 +75,25 @@ public class WallCreateManager : MonoBehaviour
 
     private void CreateWall(int v1, int v2)
     {
+        // Calculate center offset to position grid around origin
+        float offsetX = -(v1 - 1) / 2.0f;
+        float offsetY = -(v2 - 1) / 2.0f;
+
         for (int i = 0; i < v1; i++)
         {
             for (int j = 0; j < v2; j++)
             {
-                // create wall prefab
-                
-                WallEntity wall = Instantiate(wallPrefab, new Vector3(i, j, 0), Quaternion.identity);
-                wall.transform.localScale = new Vector3(1, 1, 1); // set scale to 1x1
-                
+                // Create wall prefab with center-based positioning
+                Vector3 position = new Vector3(i + offsetX, j + offsetY, 0);
+                WallEntity wall = Instantiate(wallPrefab, position, Quaternion.identity);
+                wall.transform.localScale = new Vector3(1, 1, 1);
+
                 storedWallEntities.Add(wall);
+
             }
         }
-
     }
+
 
     public void TickForWallsMoving()
     {
