@@ -20,6 +20,13 @@ public class FallingWallController : MonoBehaviour
         startPosition = new Vector3(transform.position.x, startHeight, transform.position.z);
         ResetWall();
     }
+
+    // case 1
+    // script A
+    // method A -> object 10k 
+
+    // case 2
+    // object 10k -> method B
     
     void Update()
     {
