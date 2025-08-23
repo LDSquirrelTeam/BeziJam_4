@@ -95,6 +95,33 @@ public class WallCreateManager : MonoBehaviour
     }
 
 
+    public void CheckAttackHitWall()
+    { 
+
+    }
+
+    public void BreakWall(int x, int y)
+    { 
+        // character, attack
+        // ?
+
+        // 2x2 
+        // x,y -> gameobject -> setactive(false)
+
+        // 1. 캐릭터가 공격을 한다. -> collider ->
+
+        // 2. 공격 범위 내에 벽이 있는지 판정한다. ->
+        
+        // 3. 벽을 부순다. -> 
+
+        // char -> attack 
+        // attack area or range 
+        //  
+        // -> breakwall()
+        //
+
+    }
+
     public void TickForWallsMoving()
     {
         
