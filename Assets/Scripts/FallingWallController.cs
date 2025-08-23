@@ -13,6 +13,7 @@ public class FallingWallController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 startPosition;
     private bool hasHitFloor = false;
+    private Vector3 fixedFloorPosition;
     
     void Start()
     {
@@ -27,6 +28,17 @@ public class FallingWallController : MonoBehaviour
 
     // case 2
     // object 10k -> method B
+    
+    void FixedUpdate()
+    {
+        // 바닥에 닿은 후 위치를 지속적으로 고정
+        if (hasHitFloor)
+        {
+            transform.position = fixedFloorPosition;
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+    }
     
     void Update()
     {
@@ -44,8 +56,16 @@ public class FallingWallController : MonoBehaviour
             hasHitFloor = true;
             Debug.Log("Wall hit the floor!");
             
-            // 벽이 바닥에 닿으면 속도를 0으로 만들어 멈추게 함
+            // 즉시 모든 움직임을 멈춰서 흔들림 방지
             rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            
+            // 충돌 지점에서 정확한 위치를 계산하고 저장
+            fixedFloorPosition = transform.position;
+            fixedFloorPosition.y = collision.contacts[0].point.y + GetComponent<Collider2D>().bounds.size.y * 0.5f;
+            transform.position = fixedFloorPosition;
+            
+            // 물리를 Kinematic으로 변경
             rb.bodyType = RigidbodyType2D.Kinematic;
             
             if (autoReset)

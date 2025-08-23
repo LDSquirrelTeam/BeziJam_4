@@ -1,81 +1,75 @@
-using NUnit.Framework;
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum eWallSize
 {
-    // Small = 1, // 1x1
-    Medium = 2, // 2x2
-    Large = 4, // 4x4
-    ExtraLarge = 8 // 8x8
+    Medium = 2,     // 2x2
+    Large = 4,      // 4x4
+    ExtraLarge = 8  // 8x8
 }
 
 public class WallCreateManager : MonoBehaviour
 {
     public WallEntity wallPrefab;
-    // stl::vector
-    // stl::map
-    // queue.. stack?...
     public List<WallEntity> storedWallEntities = new List<WallEntity>();
     public float tickTime = 0.1f; // seconds
     public float currentTime = 0f; // seconds
     public float fallingSpeed = 0.1f; // how much the wall moves down per tick
+    
+    [Header("Floor Settings")]
+    public GameObject floorObject; // floor GameObject Ï∞∏Ï°∞
+    private float floorTopY; // floor ÏÉÅÎã® Y Ï¢åÌëú
 
+    private bool isClearing = false; // Ï§ëÎ≥µ Ïã§Ìñâ Î∞©ÏßÄ
 
     private void Update()
     {
-        // 60 fps
-        // 1 second = 60 frames
-        // 1/60 = 0.0166667 seconds per frame
-        // per tickTime, execute below.
-        //currentTime += Time.deltaTime;
-        //if (currentTime >= tickTime)
-        //{
-        //    TickForWallsMoving();
-        //    currentTime = 0f; // reset currentTime
-        //}
         TickForWallsMoving();
+    }
+    
+    void Start()
+    {
+        if (floorObject == null)
+        {
+            floorObject = GameObject.Find("floor");
+        }
+        
+        CalculateFloorTopY();
+    }
+    
+    void CalculateFloorTopY()
+    {
+        if (floorObject != null)
+        {
+            Renderer floorRenderer = floorObject.GetComponent<Renderer>();
+            if (floorRenderer != null)
+            {
+                floorTopY = floorRenderer.bounds.max.y;
+                Debug.Log($"Floor top Y calculated: {floorTopY}");
+            }
+            else
+            {
+                Transform floorTransform = floorObject.transform;
+                float floorHeight = floorTransform.localScale.y;
+                floorTopY = floorTransform.position.y + (floorHeight / 2f);
+                Debug.Log($"Floor top Y calculated from transform: {floorTopY}");
+            }
+        }
+        else
+        {
+            floorTopY = -4f;
+            Debug.LogWarning("Floor object not found, using default floor Y: " + floorTopY);
+        }
     }
 
     public void SpawnWall(int paramSize)
     {
-        // create
-        // 2x2
-        // 4x4
-        // 8x8
-        // with 1x1 wall prefab
-        //GameObject wall = Instantiate(wallPrefab, new Vector3(0, 10, 0), Quaternion.identity);
-        // if 2x2
-        // (1,0), (1,1), 
-        // (0,0), (0,1)
-
         CreateWall(paramSize, paramSize);
-        
-        //switch (paramSize)
-        //{
-        //    case eWallSize.Medium:
-        //        CreateWall(2,2);
-        //        break;
-        //    case eWallSize.Large:
-        //        CreateWall(4,4);
-        //        break;
-        //    case eWallSize.ExtraLarge:
-        //        CreateWall(8,8);
-        //        break;
-        //    default:
-        //        Debug.LogError("Invalid wall size");
-        //        break;
-        //}
-
-
-
     }
 
     private void CreateWall(int v1, int v2)
     {
-        // Calculate center offset to position grid around origin
         float offsetX = -(v1 - 1) / 2.0f;
         float offsetY = -(v2 - 1) / 2.0f;
 
@@ -83,68 +77,103 @@ public class WallCreateManager : MonoBehaviour
         {
             for (int j = 0; j < v2; j++)
             {
-                // Create wall prefab with center-based positioning
                 Vector3 position = new Vector3(i + offsetX, j + offsetY, 0);
                 WallEntity wall = Instantiate(wallPrefab, position, Quaternion.identity);
                 wall.transform.localScale = new Vector3(1, 1, 1);
 
                 storedWallEntities.Add(wall);
-
             }
         }
-    }
-
-
-    public void CheckAttackHitWall()
-    { 
-
-    }
-
-    public void BreakWall(int x, int y)
-    { 
-        // character, attack
-        // ?
-
-        // 2x2 
-        // x,y -> gameobject -> setactive(false)
-
-        // 1. ƒ≥∏Ø≈Õ∞° ∞¯∞›¿ª «—¥Ÿ. -> collider ->
-
-        // 2. ∞¯∞› π¸¿ß ≥ªø° ∫Æ¿Ã ¿÷¥¬¡ˆ ∆«¡§«—¥Ÿ. ->
-        
-        // 3. ∫Æ¿ª ∫Œº¯¥Ÿ. -> 
-
-        // char -> attack 
-        // attack area or range 
-        //  
-        // -> breakwall()
-        //
-
     }
 
     public void TickForWallsMoving()
     {
-        
-        if(storedWallEntities.Count <= 0)
-        {
-            // Debug.LogWarning("No walls to move.");
+        if (storedWallEntities.Count <= 0 || isClearing)
             return;
-        }
-        // per tickTime, execute below.
+        
         for (int i = 0; i < storedWallEntities.Count; i++)
         {
             var currentEntity = storedWallEntities[i];
-            // please forking copilot, make currentEntity's transform position y -= 0.1f;
+            
             if (currentEntity != null)
             {
-                currentEntity.transform.position += new Vector3(0, -1f * fallingSpeed, 0);
+                if (!currentEntity.IsLanded())
+                {
+                    Vector3 nextPosition = currentEntity.transform.position + new Vector3(0, -1f * fallingSpeed, 0);
+                    Vector3 originalPos = currentEntity.transform.position;
+
+                    float wallBottomY = nextPosition.y - (currentEntity.transform.localScale.y / 2f);
+
+                    bool hasCollision = false;
+
+                    if (wallBottomY <= floorTopY)
+                    {
+                        hasCollision = true;
+                    }
+
+                    Collider2D currentCollider = currentEntity.GetComponent<Collider2D>();
+                    foreach (var otherEntity in storedWallEntities)
+                    {
+                        if (otherEntity != currentEntity && otherEntity != null && otherEntity.IsLanded())
+                        {
+                            Collider2D otherCollider = otherEntity.GetComponent<Collider2D>();
+                            if (currentCollider.bounds.Intersects(otherCollider.bounds))
+                            {
+                                hasCollision = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (hasCollision)
+                    {
+                        currentEntity.transform.position = originalPos;
+                        currentEntity.TriggerLanding();
+                    }
+                    else
+                    {
+                        currentEntity.transform.position = nextPosition;
+                    }
+                }
             }
-            else
+        }
+
+        // Î™®Îì† Î∏îÎ°ù Ï∞©ÏßÄ ÌôïÏù∏
+        CheckAllBlocksLanded();
+    }
+
+    private void CheckAllBlocksLanded()
+    {
+        if (storedWallEntities.Count == 0) return;
+
+        bool allLanded = true;
+        foreach (var wall in storedWallEntities)
+        {
+            if (wall != null && !wall.IsLanded())
             {
-                Debug.LogWarning("WallEntity is null at index " + i);
+                allLanded = false;
+                break;
             }
+        }
+
+        if (allLanded && !isClearing)
+        {
+            Debug.Log("Î™®Îì† Î∏îÎ°ùÏù¥ Ï∞©ÏßÄÌñàÏäµÎãàÎã§. 2Ï¥à ÌõÑ Ï†úÍ±∞Îê©ÎãàÎã§.");
+            StartCoroutine(RemoveAllBlocksAfterDelay(2f));
         }
     }
 
+    private IEnumerator RemoveAllBlocksAfterDelay(float delay)
+    {
+        isClearing = true;
+        yield return new WaitForSeconds(delay);
 
+        foreach (var wall in storedWallEntities)
+        {
+            if (wall != null)
+                Destroy(wall.gameObject);
+        }
+        storedWallEntities.Clear();
+        isClearing = false;
+    }
 }

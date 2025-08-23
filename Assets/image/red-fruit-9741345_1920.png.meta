@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      red-fruit-9741345_1920_0: -6272385630283935009
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
