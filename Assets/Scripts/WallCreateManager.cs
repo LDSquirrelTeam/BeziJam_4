@@ -17,6 +17,10 @@ public class WallCreateManager : MonoBehaviour
     public float currentTime = 0f; // seconds
     public float fallingSpeed = 0.1f; // how much the wall moves down per tick
     
+    [Header("Auto Remove Settings")]
+    public bool autoRemoveAfterLanding = false; // 착지 후 자동 제거 기능
+    public float autoRemoveDelay = 2f; // 자동 제거 딜레이
+    
     [Header("Floor Settings")]
     public GameObject floorObject; // floor GameObject 참조
     private float floorTopY; // floor 상단 Y 좌표
@@ -138,8 +142,11 @@ public class WallCreateManager : MonoBehaviour
             }
         }
 
-        // 모든 블록 착지 확인
-        CheckAllBlocksLanded();
+        // 자동 제거가 활성화된 경우에만 모든 블록 착지 확인
+        if (autoRemoveAfterLanding)
+        {
+            CheckAllBlocksLanded();
+        }
     }
 
     private void CheckAllBlocksLanded()
@@ -158,8 +165,8 @@ public class WallCreateManager : MonoBehaviour
 
         if (allLanded && !isClearing)
         {
-            Debug.Log("모든 블록이 착지했습니다. 2초 후 제거됩니다.");
-            StartCoroutine(RemoveAllBlocksAfterDelay(2f));
+            Debug.Log($"모든 블록이 착지했습니다. {autoRemoveDelay}초 후 제거됩니다.");
+            StartCoroutine(RemoveAllBlocksAfterDelay(autoRemoveDelay));
         }
     }
 
@@ -175,5 +182,37 @@ public class WallCreateManager : MonoBehaviour
         }
         storedWallEntities.Clear();
         isClearing = false;
+    }
+    
+    /// <summary>
+    /// 수동으로 모든 벽을 제거합니다
+    /// </summary>
+    public void ManuallyRemoveAllWalls()
+    {
+        foreach (var wall in storedWallEntities)
+        {
+            if (wall != null)
+                Destroy(wall.gameObject);
+        }
+        storedWallEntities.Clear();
+        isClearing = false;
+        Debug.Log("모든 벽이 수동으로 제거되었습니다.");
+    }
+    
+    /// <summary>
+    /// 착지한 벽들만 제거합니다
+    /// </summary>
+    public void RemoveLandedWalls()
+    {
+        for (int i = storedWallEntities.Count - 1; i >= 0; i--)
+        {
+            var wall = storedWallEntities[i];
+            if (wall != null && wall.IsLanded())
+            {
+                Destroy(wall.gameObject);
+                storedWallEntities.RemoveAt(i);
+            }
+        }
+        Debug.Log("착지한 벽들이 제거되었습니다.");
     }
 }
