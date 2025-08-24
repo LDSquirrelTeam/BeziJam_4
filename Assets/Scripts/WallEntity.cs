@@ -32,4 +32,20 @@ public class WallEntity : MonoBehaviour
     {
         return hasLanded;
     }
+
+    public void ResetToPoolState()
+    {
+        // Reset any wall-specific state here
+        // For example: reset physics, animation states, etc.
+        var rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+
+        // Reset any other state variables as needed
+    }
+
+
 }
