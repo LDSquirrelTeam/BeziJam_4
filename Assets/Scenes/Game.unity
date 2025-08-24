@@ -229,6 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e14ecfcf01d7641bfdc7d869a926cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasLanded: 0
+  landingThreshold: -4
 --- !u!212 &154730084
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -488,6 +490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 425839504}
   - component: {fileID: 425839503}
+  - component: {fileID: 425839505}
   m_Layer: 0
   m_Name: WallCreateManager
   m_TagString: Untagged
@@ -512,6 +515,9 @@ MonoBehaviour:
   tickTime: 0.02
   currentTime: 0
   fallingSpeed: 0.01
+  autoRemoveAfterLanding: 0
+  autoRemoveDelay: 2
+  floorObject: {fileID: 0}
 --- !u!4 &425839504
 Transform:
   m_ObjectHideFlags: 0
@@ -527,6 +533,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425839505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425839502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043e8b76508caa24282c9714ee577011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destructionRadius: 0.5
+  allowDestroyLandedWalls: 1
+  allowDestroyFallingWalls: 0
+  useRaycastDetection: 1
+  enableDebugLog: 1
+  destructionEffect: {fileID: 0}
+  effectDuration: 1
+  wallCreateManager: {fileID: 0}
 --- !u!1 &553551001
 GameObject:
   m_ObjectHideFlags: 0
