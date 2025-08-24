@@ -40,6 +40,10 @@ public class TestCreateWall : MonoBehaviour
             iterationCount++;
             GameObject result = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             result.name = $"FallingObject_{iterationCount}";
+            // 풀에서 가져와서 쓰려면
+            // var tempObject = wallPool.Get().gameObject;
+            // 이런 식으로..
+
             return result;
         }
         return null;
