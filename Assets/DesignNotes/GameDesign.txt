@@ -28,6 +28,57 @@
 
 5. 캐릭터가 공격하는 로직(귤 혹은 흑단)
 
+ex) 
+제 시간에 잼 완성할래
+아니면
+잼은 되었고 실무에선 어떻게 쓰고 코드는 어떻게 짜야하는지 베스트 프랙티스를 볼래
+
+메모리 할당 -> 
+메모리 해제 -> 
+
+
+// 1 2 3 X 5 6 7 8 XXXXXXXXXXX
+// 1 2 3 X X X 7 8 XXXXXXXXXXX
+// 1 2 3 7 8 XXXXXXXXXXXXX
+
+----
+
+// 1 2 3 4 5 6 7 8 
+
+
+
+
+
+// 42 vector...
+// array vector
+
+// array
+// vector
+
+// new array[8]
+// new array{1,2,3,4,5,6,7,8}, {1,2,3}, {1,2,3,4,5,6,7,8}}
+
+// stl:vector <int> vec = new vector<int>();
+// length: 0
+// vec.push_back(1);
+
+// -> 공간을 찾아서 할당한다 ->
+// 공간을 찾는다 -> new array[1] ->
+// length: 1
+// vec.push_back(1);
+// vec.push_back(4);
+// vec.push_back(4); ... 5번 실행했다고 치면
+
+// 
+
+// ->..? 두 배열의 차이
+// 동적할당
+// 정적할당
+
+// 데이터를 담은 배열
+
+// ?
+
 
 
 -> ------------

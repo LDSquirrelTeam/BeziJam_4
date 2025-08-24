@@ -10,6 +10,7 @@ public class SlashAttackSecond : MonoBehaviour
     [Header("Particle Effect")]
     [SerializeField] private GameObject slashParticleParent;
     [SerializeField] private ParticleSystem slashParticles;
+    [SerializeField] private ParticleSystem slashBackParticles;
     [SerializeField] private bool createParticleIfNull = true;
     [SerializeField] private bool rotateTowardsTarget = true;
     [SerializeField] private float rotationOffset = 0f;
@@ -159,6 +160,7 @@ public class SlashAttackSecond : MonoBehaviour
         }
 
         slashParticles.Play();
+        slashBackParticles?.Play();
     }
 
     private void RotateParticleTowardsTarget(Vector3 targetPosition)

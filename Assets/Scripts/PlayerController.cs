@@ -187,20 +187,6 @@ public class PlayerController : MonoBehaviour
         //Debug.Log($"Jump Buffer: {jumpBufferCounter}, Coyote Time: {coyoteTimeCounter}, current Velocity {rb.linearVelocity}");
         //Debug.Log($"Can Ground Jump: {canGroundJump}, Can Air Jump: {canAirJump}, Current Jump Count: {currentJumpCount}");
 
-        //if (canGroundJump && !isGrounded)
-        //{
-        //    Debug.Log("ground smoouth jumping");
-        //    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        //    jumpBufferCounter = 0f;
-        //    coyoteTimeCounter = 0f;
-        //}
-        //if (canAirJump)
-        //{
-        //    Debug.Log("air smoouth jumping");
-        //    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        //    jumpBufferCounter = 0f;
-        //    currentJumpCount++;
-        //}
 
         if (canGroundJump || canAirJump)
         {
