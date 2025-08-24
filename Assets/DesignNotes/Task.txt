@@ -1,0 +1,7 @@
+2025 08 24
+
+오브젝트 풀링 시스템 이해하기
+1. 생성 및 파괴에서 풀링 시스템 쓸 수 있도록 WallObjectPoolManager.cs 만들고 채워넣기
+
+2. GameScene 안에 있는 TestWall 오브젝트의 TestCreateWall 스크립트 수정하기
+  - WallObjectPoolManager.cs에서 제공하는 메서드로 리팩토링

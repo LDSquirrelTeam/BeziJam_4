@@ -3,6 +3,7 @@ using UnityEngine;
 public class WallEntity : MonoBehaviour
 {
     [Header("Landing Settings")]
+    public float health = 100f;
     public bool hasLanded = false;
     public float landingThreshold = -4f; // 기본 floor 위치 (자동 계산될 수도 있음)
     
@@ -15,6 +16,11 @@ public class WallEntity : MonoBehaviour
     
     void Update()
     {
+    }
+
+    public void SetHealth()
+    {
+        health = 100f;
     }
     
     public void TriggerLanding()
