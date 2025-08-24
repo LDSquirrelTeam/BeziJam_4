@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7424593146864688023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1640464056176856220}
+  - component: {fileID: 4301810824443234597}
+  - component: {fileID: 1686152385629259765}
+  m_Layer: 0
+  m_Name: WallCreateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1640464056176856220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424593146864688023}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6565635, y: 1.2095226, z: -0.025234766}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4301810824443234597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424593146864688023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d67964fb6a549748ae01533691cf0d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallPrefab: {fileID: 2529032623442140882, guid: 99218cf7a38eaac4ea8aac789e4cfb01, type: 3}
+  storedWallEntities: []
+  tickTime: 0.01
+  currentTime: 0
+  fallingSpeed: 0.01
+  autoRemoveAfterLanding: 0
+  autoRemoveDelay: 2
+  floorObject: {fileID: 0}
+--- !u!114 &1686152385629259765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424593146864688023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 043e8b76508caa24282c9714ee577011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destructionRadius: 0.5
+  allowDestroyLandedWalls: 1
+  allowDestroyFallingWalls: 0
+  useRaycastDetection: 1
+  enableDebugLog: 1
+  useObjectPooling: 1
+  initialPoolSize: 50
+  wallPrefabForPool: {fileID: 0}
+  destructionEffect: {fileID: 0}
+  effectDuration: 1
+  wallCreateManager: {fileID: 0}
